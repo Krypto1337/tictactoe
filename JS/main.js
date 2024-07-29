@@ -11,9 +11,10 @@ const players = [
 		sign: "O",
 	},
 ];
-let currentPlayer = players[0].sign;
+let currentPlayerSign = players[0].sign;
+let currentPlayerName = players[0].name;
 
-endMessage.textContent = `${players[0].name}'s turn!`;
+endMessage.textContent = `${currentPlayerName}'s turn!`;
 
 const winning_combinations = [
 	[0, 1, 2],
@@ -30,9 +31,9 @@ function checkWin(currentPlayer) {
 	for (let i = 0; i < winning_combinations.length; i++) {
 		const [a, b, c] = winning_combinations[i];
 		if (
-			cells[a].textContent.toUpperCase() === currentPlayer &&
-			cells[b].textContent.toUpperCase() === currentPlayer &&
-			cells[c].textContent.toUpperCase() === currentPlayer
+			cells[a].textContent.toUpperCase() === currentPlayerSign &&
+			cells[b].textContent.toUpperCase() === currentPlayerSign &&
+			cells[c].textContent.toUpperCase() === currentPlayerSign
 		) {
 			return true;
 		}
@@ -49,5 +50,31 @@ function checkTie() {
 	return true;
 }
 
-console.log(checkWin(currentPlayer));
-console.log(checkTie());
+function restartButton() {
+	for (let i = 0; i < cells.length; i++) {
+		cells[i].textContent = "";
+	}
+	endMessage.textContent = `${currentPlayerName}'s turn!`;
+}
+
+for (let i = 0; i < cells.length; i++) {
+	cells[i].addEventListener("click", () => {
+		if (cells[i].textContent !== "") return;
+		cells[i].textContent = currentPlayerSign;
+		if (checkWin(currentPlayerSign)) {
+			endMessage.textContent = `Game over! ${currentPlayerName} wins!`;
+			return;
+		}
+		if (checkTie()) {
+			endMessage.textContent = "Game is tied!";
+			return;
+		}
+		currentPlayerSign =
+			currentPlayerSign === players[0].sign ? players[1].sign : players[0].sign;
+		if (currentPlayerSign == players[0].sign) {
+			endMessage.textContent = `${players[0].name}'s turn!`;
+		} else {
+			endMessage.textContent = `${players[1].name}'s turn!`;
+		}
+	});
+}
