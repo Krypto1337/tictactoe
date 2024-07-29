@@ -1,7 +1,12 @@
-const board = document.getElementById("board");
-const cells = document.getElementsByClassName("cell");
-const endMessage = document.getElementById("endMessageText");
-const restartButton = document.getElementById("restartButton");
+//REWORK NOW!
+const DOMElements = (function () {
+	const board = document.getElementById("board");
+	const cells = document.getElementsByClassName("cell");
+	const endMessage = document.getElementById("endMessageText");
+	const restartButton = document.getElementById("restartButton");
+	return { board, cells, endMessage, restartButton };
+})();
+
 const players = [
 	{
 		name: "Player One",
@@ -15,7 +20,7 @@ const players = [
 let currentPlayerSign = players[0].sign;
 let currentPlayerName = players[0].name;
 
-endMessage.textContent = `${currentPlayerName}'s turn!`;
+DOMElements.endMessage.textContent = `${currentPlayerName}'s turn!`;
 
 const winning_combinations = [
 	[0, 1, 2],
@@ -32,9 +37,9 @@ function checkWin(currentPlayer) {
 	for (let i = 0; i < winning_combinations.length; i++) {
 		const [a, b, c] = winning_combinations[i];
 		if (
-			cells[a].textContent.toUpperCase() === currentPlayerSign &&
-			cells[b].textContent.toUpperCase() === currentPlayerSign &&
-			cells[c].textContent.toUpperCase() === currentPlayerSign
+			DOMElements.cells[a].textContent.toUpperCase() === currentPlayerSign &&
+			DOMElements.cells[b].textContent.toUpperCase() === currentPlayerSign &&
+			DOMElements.cells[c].textContent.toUpperCase() === currentPlayerSign
 		) {
 			return true;
 		}
@@ -43,8 +48,8 @@ function checkWin(currentPlayer) {
 }
 
 function checkTie() {
-	for (let i = 0; i < cells.length; i++) {
-		if (cells[i].textContent === "") {
+	for (let i = 0; i < DOMElements.cells.length; i++) {
+		if (DOMElements.cells[i].textContent === "") {
 			return false;
 		}
 	}
@@ -52,22 +57,22 @@ function checkTie() {
 }
 
 function restartGame() {
-	for (let i = 0; i < cells.length; i++) {
+	for (let i = 0; i < DOMElements.cells.length; i++) {
 		cells[i].textContent = "";
 	}
-	endMessage.textContent = `${currentPlayerName}'s turn!`;
+	DOMElements.endMessage.textContent = `${currentPlayerName}'s turn!`;
 }
 
-for (let i = 0; i < cells.length; i++) {
-	cells[i].addEventListener("click", () => {
-		if (cells[i].textContent !== "") return;
-		cells[i].textContent = currentPlayerSign;
+for (let i = 0; i < DOMElements.cells.length; i++) {
+	DOMElements.cells[i].addEventListener("click", () => {
+		if (DOMElements.cells[i].textContent !== "") return;
+		DOMElements.cells[i].textContent = currentPlayerSign;
 		if (checkWin(currentPlayerSign)) {
-			endMessage.textContent = `Game over! ${currentPlayerName} wins!`;
+			DOMElements.endMessage.textContent = `Game over! ${currentPlayerName} wins!`;
 			return;
 		}
 		if (checkTie()) {
-			endMessage.textContent = "Game is tied!";
+			DOMElements.endMessage.textContent = "Game is tied!";
 			return;
 		}
 		currentPlayerName =
@@ -75,9 +80,9 @@ for (let i = 0; i < cells.length; i++) {
 		currentPlayerSign =
 			currentPlayerSign === players[0].sign ? players[1].sign : players[0].sign;
 		if (currentPlayerSign == players[0].sign) {
-			endMessage.textContent = `${players[0].name}'s turn!`;
+			DOMElements.endMessage.textContent = `${players[0].name}'s turn!`;
 		} else {
-			endMessage.textContent = `${players[1].name}'s turn!`;
+			DOMElements.endMessage.textContent = `${players[1].name}'s turn!`;
 		}
 	});
 }
