@@ -1,6 +1,7 @@
 const board = document.getElementById("board");
 const cells = document.getElementsByClassName("cell");
 const endMessage = document.getElementById("endMessageText");
+const restartButton = document.getElementById("restartButton");
 const players = [
 	{
 		name: "Player One",
@@ -50,7 +51,7 @@ function checkTie() {
 	return true;
 }
 
-function restartButton() {
+function restartGame() {
 	for (let i = 0; i < cells.length; i++) {
 		cells[i].textContent = "";
 	}
@@ -69,6 +70,8 @@ for (let i = 0; i < cells.length; i++) {
 			endMessage.textContent = "Game is tied!";
 			return;
 		}
+		currentPlayerName =
+			currentPlayerName === players[0].name ? players[1].name : players[0].name;
 		currentPlayerSign =
 			currentPlayerSign === players[0].sign ? players[1].sign : players[0].sign;
 		if (currentPlayerSign == players[0].sign) {
@@ -78,3 +81,7 @@ for (let i = 0; i < cells.length; i++) {
 		}
 	});
 }
+
+restartButton.addEventListener("click", () => {
+	restartGame();
+});
