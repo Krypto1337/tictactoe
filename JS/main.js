@@ -40,4 +40,14 @@ function checkWin(currentPlayer) {
 	return false;
 }
 
+function checkTie() {
+	for (let i = 0; i < cells.length; i++) {
+		if (cells[i].textContent === "") {
+			return false;
+		}
+	}
+	return true;
+}
+
 console.log(checkWin(currentPlayer));
+console.log(checkTie());
